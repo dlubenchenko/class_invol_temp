@@ -10,7 +10,9 @@ class Gds {
 		doi,
 		paxName,
 		itinerary,
-		taxes
+		taxes,
+		total,
+		totalTax
 	) {
 		this.ticket = ticket
 		this.bsr = bsr || 1
@@ -23,6 +25,8 @@ class Gds {
 		this.paxName = paxName
 		this.itinerary = itinerary
 		this.taxes = taxes
+		this.total = total
+		this.totalTax = totalTax
 	}
 
 	splitTicket() {
@@ -30,5 +34,11 @@ class Gds {
 			.split(/\n/gi)
 			.map((key) => key.trim())
 			.filter((key) => key !== '')
+	}
+
+	sumTax() {
+		return this.taxes
+			.map((key) => +key.slice(0, -2))
+			.reduce((acc, key) => acc + key)
 	}
 }

@@ -10,7 +10,9 @@ class Amadeus extends Gds {
 		doi,
 		paxName,
 		itinerary,
-		taxes
+		taxes,
+		total,
+		totalTax
 	) {
 		super(
 			ticket,
@@ -23,7 +25,9 @@ class Amadeus extends Gds {
 			doi,
 			paxName,
 			itinerary,
-			taxes
+			taxes,
+			total,
+			totalTax
 		)
 	}
 
@@ -70,8 +74,15 @@ class Amadeus extends Gds {
 			.toString()
 	}
 
-	airlineFareInfo() {
-		return
+	equivalentInfo() {
+		return (
+			this.ticket
+				.filter((key) => key.includes('EQUIV'))
+				.join()
+				.split(' ')
+				.filter((key) => !key.includes(this.bsr) && +key) ||
+			this.total - this.totalTax
+		)
 	}
 
 	airlineCurrencyInfo() {
@@ -107,8 +118,11 @@ amadeus.bsr = amadeus.bsrInfo()
 amadeus.roe = amadeus.roeInfo()
 amadeus.fare = amadeus.fareInfo()
 amadeus.currency = amadeus.currencyInfo()
-amadeus.airlineFare = amadeus.airlineFareInfo()
+amadeus.equivalent = amadeus.equivalentInfo() + amadeus.currency
 amadeus.taxes = amadeus.taxesInfo()
+amadeus.totalTax = amadeus.sumTax() + amadeus.currency
+
+amadeus.sumTax()
 
 console.log(amadeus)
 
