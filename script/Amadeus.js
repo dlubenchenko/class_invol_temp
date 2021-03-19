@@ -86,19 +86,50 @@ class Amadeus extends Gds {
 	}
 
 	airlineCurrencyInfo() {
-		return
+		return this.ticket
+			.filter(
+				(key) =>
+					key.includes('FARE') && !key.includes('FE') && key.includes(this.fare)
+			)
+			.join()
+			.split(' ')
+			.filter((key) => key.length === 3)
+			.join()
 	}
 
 	doiInfo() {
-		return
+		return this.ticket
+			.filter((key) => key.includes('DOI-'))
+			.map((key) => key.split(' ').filter((key) => key.includes('DOI-')))
+			.toString()
+			.slice(4)
 	}
 
 	paxNameInfo() {
-		return
+		return this.ticket
+			.filter((key) => key.includes('1.') && key.includes('ST'))
+			.map((key) =>
+				key.split(' ').filter((key) => key !== '' && key.includes('1.'))
+			)
+			.join()
+			.slice(2)
 	}
 
 	itineraryInfo() {
-		return
+		let x =
+			this.ticket.indexOf(
+				this.ticket
+					.filter((key) => key.includes('1.') && key.includes('ST'))
+					.join()
+			) + 1
+		let y = this.ticket.indexOf(
+			this.ticket
+				.filter((key) => key.includes('FARE') && !key.includes('FE'))
+				.join()
+		)
+		return this.ticket
+			.slice(x, y)
+			.map((key) => key.slice(7, 13) + key.slice(18, 18))
 	}
 
 	taxesInfo() {
@@ -120,15 +151,27 @@ amadeus.fare = amadeus.fareInfo()
 amadeus.currency = amadeus.currencyInfo()
 amadeus.equivalent = amadeus.equivalentInfo() + amadeus.currency
 amadeus.taxes = amadeus.taxesInfo()
+amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
 amadeus.totalTax = amadeus.sumTax() + amadeus.currency
+amadeus.doi = amadeus.doiInfo()
+amadeus.paxName = amadeus.paxNameInfo()
+amadeus.itinerary = amadeus.itineraryInfo()
 
 amadeus.sumTax()
 
 console.log(amadeus)
 
 const output = document.querySelector('#output-info')
-output.value = Object.keys(amadeus)
-	.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
-	.filter((key) => key.indexOf('TICKET'))
-	.toString()
-	.replace(/,/gi, '')
+output.value =
+	Object.keys(amadeus)
+		.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
+		.filter(
+			(key) =>
+				key.indexOf('TICKET') &&
+				key.indexOf('ITINERARY') &&
+				key.indexOf('TAXES')
+		)
+		.toString()
+		.replace(/,/gi, '') +
+	'\n' +
+	amadeus.taxes.toString().replace(/,/gi, ' ')
