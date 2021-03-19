@@ -69,7 +69,6 @@ amadeus.fare = amadeus.fareInfo()
 console.log(amadeus)
 
 const output = document.querySelector('#output-info')
-
 output.value = Object.keys(amadeus)
 	.map((key) => `${key.toUpperCase()} - ${amadeus[key]} \n`)
 	.filter((key) => key.indexOf('TICKET'))
