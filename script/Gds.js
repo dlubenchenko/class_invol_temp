@@ -5,7 +5,7 @@ class Gds {
 		roe,
 		fare,
 		currency,
-		airlineFare,
+		equivalent,
 		airlineCurrency,
 		doi,
 		paxName,
@@ -17,7 +17,7 @@ class Gds {
 		this.roe = roe || 1
 		this.fare = fare
 		this.currency = currency
-		this.airlineFare = airlineFare
+		this.equivalent = equivalent
 		this.airlineCurrency = airlineCurrency
 		this.doi = doi
 		this.paxName = paxName

@@ -5,7 +5,7 @@ class Amadeus extends Gds {
 		roe,
 		fare,
 		currency,
-		airlineFare,
+		equivalent,
 		airlineCurrency,
 		doi,
 		paxName,
@@ -18,7 +18,7 @@ class Amadeus extends Gds {
 			roe,
 			fare,
 			currency,
-			airlineFare,
+			equivalent,
 			airlineCurrency,
 			doi,
 			paxName,
@@ -28,7 +28,6 @@ class Amadeus extends Gds {
 	}
 
 	bsrInfo() {
-		// console.log(this.ticket)
 		return +this.ticket
 			.filter((key, i) => key.includes('BSR'))[0]
 			.split(' ')
@@ -58,6 +57,48 @@ class Amadeus extends Gds {
 			.split(' ')
 			.filter((key) => +key > 0)
 	}
+
+	currencyInfo() {
+		return this.ticket
+			.filter((key) => key.includes('TOTAL') && !key.includes('TOTALTAX'))
+			.join()
+			.split(' ')
+			.filter(
+				(key) =>
+					!key.includes('TOTAL') && !+key && key !== '' && key.length === 3
+			)
+			.toString()
+	}
+
+	airlineFareInfo() {
+		return
+	}
+
+	airlineCurrencyInfo() {
+		return
+	}
+
+	doiInfo() {
+		return
+	}
+
+	paxNameInfo() {
+		return
+	}
+
+	itineraryInfo() {
+		return
+	}
+
+	taxesInfo() {
+		return this.ticket
+			.filter((key) => key.includes('TX'))
+			.join()
+			.replace(/,/g, ' ')
+			.split(' ')
+			.filter((tax) => tax != '' && tax.slice(0, 2).indexOf('TX'))
+			.filter((key, i) => i % 2 !== 0)
+	}
 }
 
 const amadeus = new Amadeus(twdAma)
@@ -65,12 +106,15 @@ amadeus.ticket = amadeus.splitTicket()
 amadeus.bsr = amadeus.bsrInfo()
 amadeus.roe = amadeus.roeInfo()
 amadeus.fare = amadeus.fareInfo()
+amadeus.currency = amadeus.currencyInfo()
+amadeus.airlineFare = amadeus.airlineFareInfo()
+amadeus.taxes = amadeus.taxesInfo()
 
 console.log(amadeus)
 
 const output = document.querySelector('#output-info')
 output.value = Object.keys(amadeus)
-	.map((key) => `${key.toUpperCase()} - ${amadeus[key]} \n`)
+	.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
 	.filter((key) => key.indexOf('TICKET'))
 	.toString()
 	.replace(/,/gi, '')

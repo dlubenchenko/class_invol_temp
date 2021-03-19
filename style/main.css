@@ -1,3 +1,7 @@
+body {
+	background-color: khaki;
+}
+
 #main-text {
 	height: 29rem;
 	width: 40rem;
@@ -10,6 +14,11 @@
 }
 
 #output-info {
-	height: 11rem;
+	height: 14rem;
 	width: 40rem;
+}
+
+textarea {
+	border-radius: 0.3rem;
+	padding: 0.2rem;
 }
