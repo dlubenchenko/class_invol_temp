@@ -127,9 +127,14 @@ class Amadeus extends Gds {
 				.filter((key) => key.includes('FARE') && !key.includes('FE'))
 				.join()
 		)
-		return this.ticket
-			.slice(x, y)
-			.map((key) => key.slice(7, 13) + key.slice(18, 18))
+
+		return this.ticket.slice(x, y).map((key) => {
+			const fltNum = key.slice(7, 13).replace(' ', ''),
+				fltCls = key.slice(16, 17),
+				fltDt = key.slice(18, 23),
+				fltDep = key.slice(3, 6) || key.slice(0, 3)
+			return `${fltNum} ${fltCls} ${fltDt} ${fltDep}`
+		})
 	}
 
 	taxesInfo() {
@@ -139,7 +144,28 @@ class Amadeus extends Gds {
 			.replace(/,/g, ' ')
 			.split(' ')
 			.filter((tax) => tax != '' && tax.slice(0, 2).indexOf('TX'))
-			.filter((key, i) => i % 2 !== 0)
+			.filter((_key, i) => {
+				return i % 2 !== 0
+			})
+			.map((key) => {
+				return {
+					name: key.slice(-2),
+					value: key.slice(0, -2),
+				}
+			})
+	}
+
+	totalInfo() {
+		return this.ticket
+			.filter(
+				(key) =>
+					key.includes('TOTAL') &&
+					!key.includes('TOTALTAX') &&
+					key.includes(this.currency)
+			)
+			.join()
+			.split(' ')
+			.filter((key) => +key > 0)
 	}
 }
 
@@ -149,15 +175,15 @@ amadeus.bsr = amadeus.bsrInfo()
 amadeus.roe = amadeus.roeInfo()
 amadeus.fare = amadeus.fareInfo()
 amadeus.currency = amadeus.currencyInfo()
-amadeus.equivalent = amadeus.equivalentInfo() + amadeus.currency
+amadeus.equivalent = amadeus.equivalentInfo() + ' ' + amadeus.currency
 amadeus.taxes = amadeus.taxesInfo()
 amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
-amadeus.totalTax = amadeus.sumTax() + amadeus.currency
+amadeus.totalTax = amadeus.sumTax() + ' ' + amadeus.currency
 amadeus.doi = amadeus.doiInfo()
 amadeus.paxName = amadeus.paxNameInfo()
 amadeus.itinerary = amadeus.itineraryInfo()
-
-amadeus.sumTax()
+amadeus.total = amadeus.totalInfo() + ' ' + amadeus.currency
+amadeus.fare = amadeus.fareInfo() + ' ' + amadeus.airlineCurrency
 
 console.log(amadeus)
 
@@ -173,5 +199,7 @@ output.value =
 		)
 		.toString()
 		.replace(/,/gi, '') +
-	'\n' +
-	amadeus.taxes.toString().replace(/,/gi, ' ')
+	amadeus.taxes
+		.map((key) => `${key.value}${key.name}`)
+		.toString()
+		.replace(/,/gi, ' ')

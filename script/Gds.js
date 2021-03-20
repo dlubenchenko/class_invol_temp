@@ -37,8 +37,8 @@ class Gds {
 	}
 
 	sumTax() {
-		return this.taxes
-			.map((key) => +key.slice(0, -2))
-			.reduce((acc, key) => acc + key)
+		return this.taxes.reduce((acc, key) => {
+			return acc + +key.value
+		}, 0)
 	}
 }
