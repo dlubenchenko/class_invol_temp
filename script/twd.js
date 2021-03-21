@@ -21,7 +21,7 @@ SAC-MULTI/USE TWH
 >
 twd/tax
 TOTALTAX   EUR    262.72                                                        
-TX01 EUR    106.88YR  TX02 EUR     15.00YQ  TX03 EUR      4.68FR                
+TX01 EUR    106.88YR  TX02 EUR     15.00YR  TX03 EUR      4.68FR                
 TX04 EUR     11.47QX  TX05 EUR      0.89O9  TX06 EUR      2.85JK                
 TX07 EUR     22.27QH  TX08 EUR      8.53XK  TX09 EUR      1.79EQ                
 TX10 EUR      0.86O2  TX11 EUR      8.53EG  TX12 EUR      7.50HB                
@@ -42,8 +42,8 @@ const twdAmaFQQ = `
   USD   141.00      01SEP20IST KL X/E/PAR KL NYC Q18.90 M
   EUR   119.00      122.55NUC141.45END ROE1.000000
   EUR    11.76-YQ   XT EUR 4.68-FR EUR 19.64-QX EUR 3.00-M6
-  EUR   100.73-YR   EUR 20.00-TR EUR 3.33-XA EUR 5.88-XY
-  EUR    61.48-XT   EUR  4.95-YC
+  EUR   100.73-YR   EUR 20.00-TR EUR 3.33-XA EUR 5.88
+  EUR    61.48-XT   EUR -XY 4.95-YC
   EUR   292.97
   RATE USED 1USD=0.839365EUR
   BAG/SEAT/SERVICES AT A CHARGE MAY BE AVAILABLE-ENTER FXK

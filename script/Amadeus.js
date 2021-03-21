@@ -158,7 +158,7 @@ class Amadeus extends Ticket {
 			.map((key) => {
 				return {
 					name: key.slice(-2),
-					value: key.slice(0, -2),
+					value: +key.slice(0, -2),
 				}
 			})
 	}
@@ -199,6 +199,7 @@ amadeus.equivalent =
 		  ' ' +
 		  amadeus.currency
 
+amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
 console.log(amadeus)
 
 const output = document.querySelector('#output-info')

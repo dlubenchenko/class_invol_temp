@@ -41,4 +41,21 @@ class Ticket {
 			return acc + +key.value
 		}, 0)
 	}
+
+	findSimilar() {
+		return this.taxes.map((key, i) => {
+			for (let j = i + 1; j < this.taxes.length; j++) {
+				const el = this.taxes[j].name
+				if (key.name === el) {
+					key.value = this.taxes[j].value + key.value
+					this.taxes[j].name = ''
+					this.taxes[j].value = ''
+				}
+			}
+			return {
+				name: key.name,
+				value: key.value,
+			}
+		})
+	}
 }
