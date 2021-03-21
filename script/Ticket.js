@@ -1,4 +1,4 @@
-class Gds {
+class Ticket {
 	constructor(
 		ticket,
 		bsr,

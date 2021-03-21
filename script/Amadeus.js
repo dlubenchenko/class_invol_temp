@@ -1,4 +1,4 @@
-class Amadeus extends Gds {
+class Amadeus extends Ticket {
 	constructor(
 		ticket,
 		bsr,
@@ -32,31 +32,41 @@ class Amadeus extends Gds {
 	}
 
 	bsrInfo() {
-		return +this.ticket
-			.filter((key, i) => key.includes('BSR'))[0]
-			.split(' ')
-			.filter((key) => key !== '')[
-			this.ticket
+		if (this.ticket.find((key) => key.includes('BSR'))) {
+			return +this.ticket
 				.filter((key, i) => key.includes('BSR'))[0]
 				.split(' ')
-				.filter((key) => key !== '')
-				.indexOf('BSR') + 1
-		]
+				.filter((key) => key !== '')[
+				this.ticket
+					.filter((key) => key.includes('BSR'))[0]
+					.split(' ')
+					.filter((key) => key !== '')
+					.indexOf('BSR') + 1
+			]
+		} else
+			return +(this.equivalent.slice(0, -4) / this.fare.slice(0, -4)).toFixed(7)
 	}
 
 	roeInfo() {
-		return +this.ticket
-			.map((key) => key.split(' ').filter((key) => key.includes('ROE')))
-			.join()
-			.split(',')
-			.filter((key) => key !== '')
-			.toString()
-			.slice(3)
+		return (
+			+this.ticket
+				.map((key) => key.split(' ').filter((key) => key.includes('ROE')))
+				.join()
+				.split(',')
+				.filter((key) => key !== '')
+				.toString()
+				.slice(3) || 1
+		)
 	}
 
 	fareInfo() {
 		return +this.ticket
-			.filter((key) => key.includes('FARE') && !key.includes('FE'))
+			.filter(
+				(key) =>
+					key.includes('FARE') &&
+					!key.includes('FE') &&
+					key.includes(this.airlineCurrency)
+			)
 			.join()
 			.split(' ')
 			.filter((key) => +key > 0)
@@ -75,14 +85,12 @@ class Amadeus extends Gds {
 	}
 
 	equivalentInfo() {
-		return (
-			this.ticket
-				.filter((key) => key.includes('EQUIV'))
-				.join()
-				.split(' ')
-				.filter((key) => !key.includes(this.bsr) && +key) ||
-			this.total - this.totalTax
-		)
+		return +this.ticket
+			.filter((key) => key.includes('EQUIV'))
+			.toString()
+			.replace(this.bsr, '')
+			.split(' ')
+			.filter((key) => +key > 0)
 	}
 
 	airlineCurrencyInfo() {
@@ -171,11 +179,9 @@ class Amadeus extends Gds {
 
 const amadeus = new Amadeus(twdAma)
 amadeus.ticket = amadeus.splitTicket()
-amadeus.bsr = amadeus.bsrInfo()
 amadeus.roe = amadeus.roeInfo()
 amadeus.fare = amadeus.fareInfo()
 amadeus.currency = amadeus.currencyInfo()
-amadeus.equivalent = amadeus.equivalentInfo() + ' ' + amadeus.currency
 amadeus.taxes = amadeus.taxesInfo()
 amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
 amadeus.totalTax = amadeus.sumTax() + ' ' + amadeus.currency
@@ -184,6 +190,14 @@ amadeus.paxName = amadeus.paxNameInfo()
 amadeus.itinerary = amadeus.itineraryInfo()
 amadeus.total = amadeus.totalInfo() + ' ' + amadeus.currency
 amadeus.fare = amadeus.fareInfo() + ' ' + amadeus.airlineCurrency
+amadeus.bsr = amadeus.bsrInfo()
+amadeus.equivalent =
+	amadeus.equivalentInfo() !== ''
+		? amadeus.equivalentInfo() + ' ' + amadeus.currency
+		: +amadeus.total.slice(0, -4) -
+		  +amadeus.totalTax.slice(0, -4) +
+		  ' ' +
+		  amadeus.currency
 
 console.log(amadeus)
 
@@ -199,6 +213,7 @@ output.value =
 		)
 		.toString()
 		.replace(/,/gi, '') +
+	'\n' +
 	amadeus.taxes
 		.map((key) => `${key.value}${key.name}`)
 		.toString()

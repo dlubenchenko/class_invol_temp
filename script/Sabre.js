@@ -1,4 +1,4 @@
-class Sabre extends Gds {
+class Sabre extends Ticket {
 	constructor(
 		ticket,
 		bsr,

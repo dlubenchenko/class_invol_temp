@@ -1,4 +1,4 @@
-const twdAma = `
+let twdAma = `
 TKT-0573325039259-260    RCI-                     1A  LOC-J4YE53
  OD-CAICAI  SI-      FCPI-0   POI-PAR  DOI-14MAR20  IOI-20266002
    1.REZK/ABDELHALIM MR        ADT            ST
