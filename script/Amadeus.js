@@ -44,7 +44,9 @@ class Amadeus extends Ticket {
 					.indexOf('BSR') + 1
 			]
 		} else
-			return +(this.equivalent.slice(0, -4) / this.fare.slice(0, -4)).toFixed(7)
+			return (
+				+(this.equivalent.slice(0, -4) / this.fare.slice(0, -4)).toFixed(7) || 1
+			)
 	}
 
 	roeInfo() {
@@ -85,12 +87,15 @@ class Amadeus extends Ticket {
 	}
 
 	equivalentInfo() {
-		return +this.ticket
-			.filter((key) => key.includes('EQUIV'))
-			.toString()
-			.replace(this.bsr, '')
-			.split(' ')
-			.filter((key) => +key > 0)
+		if (this.ticket.find((key) => key.includes('EQUIV'))) {
+			return +this.ticket
+				.filter((key) => key.includes('EQUIV'))
+				.toString()
+				.replace(this.bsr, '')
+				.split(' ')
+				.filter((key) => +key > 0)
+		}
+		return +this.fare.slice(0, -4)
 	}
 
 	airlineCurrencyInfo() {
@@ -177,45 +182,75 @@ class Amadeus extends Ticket {
 	}
 }
 
-const amadeus = new Amadeus(twdAma)
-amadeus.ticket = amadeus.splitTicket()
-amadeus.roe = amadeus.roeInfo()
-amadeus.fare = amadeus.fareInfo()
-amadeus.currency = amadeus.currencyInfo()
-amadeus.taxes = amadeus.taxesInfo()
-amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
-amadeus.totalTax = amadeus.sumTax() + ' ' + amadeus.currency
-amadeus.doi = amadeus.doiInfo()
-amadeus.paxName = amadeus.paxNameInfo()
-amadeus.itinerary = amadeus.itineraryInfo()
-amadeus.total = amadeus.totalInfo() + ' ' + amadeus.currency
-amadeus.fare = amadeus.fareInfo() + ' ' + amadeus.airlineCurrency
-amadeus.bsr = amadeus.bsrInfo()
-amadeus.equivalent =
-	amadeus.equivalentInfo() !== ''
-		? amadeus.equivalentInfo() + ' ' + amadeus.currency
-		: +amadeus.total.slice(0, -4) -
-		  +amadeus.totalTax.slice(0, -4) +
-		  ' ' +
-		  amadeus.currency
+let amadeus = temp.addEventListener('keyup', () => {
+	amadeus = new Amadeus(temp.value)
+	amadeus.ticket = amadeus.splitTicket()
+	amadeus.roe = amadeus.roeInfo()
+	amadeus.fare = amadeus.fareInfo()
+	amadeus.currency = amadeus.currencyInfo()
+	amadeus.taxes = amadeus.taxesInfo()
+	amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
+	amadeus.totalTax = amadeus.sumTax() + ' ' + amadeus.currency
+	amadeus.doi = amadeus.doiInfo()
+	amadeus.paxName = amadeus.paxNameInfo()
+	amadeus.itinerary = amadeus.itineraryInfo()
+	amadeus.total = amadeus.totalInfo() + ' ' + amadeus.currency
+	amadeus.fare = amadeus.fareInfo() + ' ' + amadeus.airlineCurrency
+	amadeus.bsr = amadeus.bsrInfo()
+	amadeus.equivalent =
+		amadeus.equivalentInfo() !== ''
+			? amadeus.equivalentInfo() + ' ' + amadeus.currency
+			: +amadeus.total.slice(0, -4) -
+			  +amadeus.totalTax.slice(0, -4) +
+			  ' ' +
+			  amadeus.currency
 
-amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
-console.log(amadeus)
+	amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
+	console.log(amadeus)
+	return amadeus
+})
+
+// amadeus.ticket = amadeus.splitTicket()
+// amadeus.roe = amadeus.roeInfo()
+// amadeus.fare = amadeus.fareInfo()
+// amadeus.currency = amadeus.currencyInfo()
+// amadeus.taxes = amadeus.taxesInfo()
+// amadeus.airlineCurrency = amadeus.airlineCurrencyInfo()
+// amadeus.totalTax = amadeus.sumTax() + ' ' + amadeus.currency
+// amadeus.doi = amadeus.doiInfo()
+// amadeus.paxName = amadeus.paxNameInfo()
+// amadeus.itinerary = amadeus.itineraryInfo()
+// amadeus.total = amadeus.totalInfo() + ' ' + amadeus.currency
+// amadeus.fare = amadeus.fareInfo() + ' ' + amadeus.airlineCurrency
+// amadeus.bsr = amadeus.bsrInfo()
+// amadeus.equivalent =
+// 	amadeus.equivalentInfo() !== ''
+// 		? amadeus.equivalentInfo() + ' ' + amadeus.currency
+// 		: +amadeus.total.slice(0, -4) -
+// 		  +amadeus.totalTax.slice(0, -4) +
+// 		  ' ' +
+// 		  amadeus.currency
+
+// amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
+// console.log(amadeus)
 
 const output = document.querySelector('#output-info')
-output.value =
-	Object.keys(amadeus)
-		.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
-		.filter(
-			(key) =>
-				key.indexOf('TICKET') &&
-				key.indexOf('ITINERARY') &&
-				key.indexOf('TAXES')
-		)
-		.toString()
-		.replace(/,/gi, '') +
-	'\n' +
-	amadeus.taxes
-		.map((key) => `${key.value}${key.name}`)
-		.toString()
-		.replace(/,/gi, ' ')
+
+temp.addEventListener('keyup', () => {
+	output.value =
+		Object.keys(amadeus)
+			.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
+			.filter(
+				(key) =>
+					key.indexOf('TICKET') &&
+					key.indexOf('ITINERARY') &&
+					key.indexOf('TAXES')
+			)
+			.toString()
+			.replace(/,/gi, '') +
+		'\n' +
+		amadeus.taxes
+			.map((key) => `${key.value}${key.name}`)
+			.toString()
+			.replace(/,/gi, ' ')
+})
