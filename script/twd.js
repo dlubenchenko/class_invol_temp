@@ -87,7 +87,7 @@ let twdSabre = `
     FARE CALCULATION                                               
     IEV DL X/PAR DL YTO M126.50AZ X/ROM AZ IEV91.50NUC218.00END ROE2.123000                                                       
     TAX BREAKDOWN                                                  
-    TAX      6954YR TAX       108UA TAX        54UD TAX       350YK
+    TAX      6954YR TAX       108YR TAX        54UD TAX       350YK
     TAX       580QX TAX       141FR TAX       515CA TAX        65RC
     TAX       497SQ TAX       225HB TAX       290IT TAX        29MJ
     TAX        96VT                                                

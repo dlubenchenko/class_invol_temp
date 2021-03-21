@@ -66,7 +66,9 @@ class Sabre extends Ticket {
 	}
 
 	equivalentInfo() {
-		return
+		return this.ticket.filter(
+			(key) => key.includes('EQUIV') && key.includes(this.currency)
+		)
 	}
 
 	airlineCurrencyInfo() {
@@ -104,17 +106,21 @@ class Sabre extends Ticket {
 			.map((key) => {
 				return {
 					name: key.slice(-2),
-					value: key.slice(0, -2),
+					value: +key.slice(0, -2),
 				}
 			})
 	}
 
 	totalInfo() {
-		return
+		return this.ticket.filter(
+			(key) => key.includes('TOTAL') && key.includes(this.currency)
+		)
 	}
 }
 
-const sabre = new Sabre(twdSabre)
+// const sabre = new Sabre(temp.value)
+
+const sabre = new Sabre(temp.value)
 
 sabre.ticket = sabre.splitTicket()
 sabre.bsr = sabre.bsrInfo()
@@ -123,5 +129,9 @@ sabre.currency = sabre.currencyInfo()
 sabre.doi = sabre.doiInfo()
 sabre.paxName = sabre.paxNameInfo()
 sabre.taxes = sabre.taxesInfo()
+sabre.taxes = sabre.findSimilar().filter((key) => key.name !== '')
+sabre.totalTax = sabre.sumTax()
+sabre.total = sabre.totalInfo()
+sabre.equivalent = sabre.equivalentInfo()
 
 console.log(sabre)

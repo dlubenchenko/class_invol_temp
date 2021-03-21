@@ -203,19 +203,19 @@ amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
 console.log(amadeus)
 
 const output = document.querySelector('#output-info')
-// output.value =
-// 	Object.keys(amadeus)
-// 		.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
-// 		.filter(
-// 			(key) =>
-// 				key.indexOf('TICKET') &&
-// 				key.indexOf('ITINERARY') &&
-// 				key.indexOf('TAXES')
-// 		)
-// 		.toString()
-// 		.replace(/,/gi, '') +
-// 	'\n' +
-// 	amadeus.taxes
-// 		.map((key) => `${key.value}${key.name}`)
-// 		.toString()
-// 		.replace(/,/gi, ' ')
+output.value =
+	Object.keys(amadeus)
+		.map((key) => `${key.toUpperCase()} - ${amadeus[key]}\n`)
+		.filter(
+			(key) =>
+				key.indexOf('TICKET') &&
+				key.indexOf('ITINERARY') &&
+				key.indexOf('TAXES')
+		)
+		.toString()
+		.replace(/,/gi, '') +
+	'\n' +
+	amadeus.taxes
+		.map((key) => `${key.value}${key.name}`)
+		.toString()
+		.replace(/,/gi, ' ')
