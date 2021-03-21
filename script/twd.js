@@ -64,3 +64,33 @@ const twdAmaFWT = `
   KL*SGT 3         SEQ 2044863     97.79 EUR /    116.50 USD           
   TOTAL AMOUNT:        222.04 EUR
 `
+
+let twdSabre = `
+    ELECTRONIC TICKET RECORD                          CRS CODE:7906
+    INV:                  CUST:                          PNR:      
+    TKT:0063660475289     ISSUED:04JUN19   PCC:286221 IATA:72323834
+    NAME:KASPERCHYK/MYKYTA MR                                      
+    FORM OF PAYMENT                        FCI: 0                  
+    1    CASH                               AMOUNT:          146   
+    2    CA5100930400052789*0321 /601154 S  AMOUNT:        15614   
+    CPN  A/L  FLT  CLS DATE   BRDOFF  TIME  ST F/B             STAT
+    1    AF   1653  X  16SEP  KBPCDG 0600   OK XL12X6M2        USED
+                                    NVB:16SEP   NVA:16SEP   BAG:1PC
+    2    AF   386   X  16SEP  CDGYYZ 1700   OK XL12X6M2        USED
+                                    NVB:16SEP   NVA:16SEP   BAG:1PC
+    3    AZ   651   S  19APR  YYZFCO 2130   OK SLSXRU          OPEN
+                                    NVB:19APR   NVA:19APR   BAG:1PC
+    4    AZ   590   S  20APR  FCOIEV 2235   OK SLSXRU          OPEN
+                                    NVB:20APR   NVA:20APR   BAG:1PC
+    FARE      USD218.00                                            
+    TOTAL       UAH15760     EQUIVALENT FARE PAID           UAH5856¥
+    FARE CALCULATION                                               
+    IEV DL X/PAR DL YTO M126.50AZ X/ROM AZ IEV91.50NUC218.00END ROE2.123000                                                       
+    TAX BREAKDOWN                                                  
+    TAX      6954YR TAX       108UA TAX        54UD TAX       350YK
+    TAX       580QX TAX       141FR TAX       515CA TAX        65RC
+    TAX       497SQ TAX       225HB TAX       290IT TAX        29MJ
+    TAX        96VT                                                
+    ENDORSEMENT                                                    
+    CONDITIONS APPLY NON ENDORSEABLE-AZ ONLY -BG DL
+    BSR423.81 YQ`
