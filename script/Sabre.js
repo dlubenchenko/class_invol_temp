@@ -57,7 +57,12 @@ class Sabre extends Ticket {
 	}
 
 	currencyInfo() {
-		return
+		return this.ticket
+			.filter((key) => key.includes('TOTAL'))
+			.toString()
+			.split(' ')
+			.filter((key) => key !== '')[1]
+			.slice(0, 3)
 	}
 
 	equivalentInfo() {
@@ -69,11 +74,19 @@ class Sabre extends Ticket {
 	}
 
 	doiInfo() {
-		return
+		return this.ticket
+			.map((key) => key.split(' ').filter((key) => key.includes('ISSUED:')))
+			.filter((key) => key.toString().includes('ISSUED:'))
+			.toString()
+			.slice(7)
 	}
 
 	paxNameInfo() {
-		return
+		return this.ticket
+			.map((key) => key.split(' ').filter((key) => key.includes('NAME:')))
+			.filter((key) => key.toString().includes('NAME:'))
+			.toString()
+			.slice(5)
 	}
 
 	itineraryInfo() {
@@ -81,7 +94,19 @@ class Sabre extends Ticket {
 	}
 
 	taxesInfo() {
-		return
+		return this.ticket
+			.filter((key) => key.includes('TAX') && !key.includes('BREAKDOWN'))
+			.toString()
+			.replace(/TAX/gi, '')
+			.replace(/,/gi, '')
+			.split(' ')
+			.filter((key) => key !== '')
+			.map((key) => {
+				return {
+					name: key.slice(-2),
+					value: key.slice(0, -2),
+				}
+			})
 	}
 
 	totalInfo() {
@@ -94,5 +119,9 @@ const sabre = new Sabre(twdSabre)
 sabre.ticket = sabre.splitTicket()
 sabre.bsr = sabre.bsrInfo()
 sabre.roe = sabre.roeInfo()
+sabre.currency = sabre.currencyInfo()
+sabre.doi = sabre.doiInfo()
+sabre.paxName = sabre.paxNameInfo()
+sabre.taxes = sabre.taxesInfo()
 
 console.log(sabre)

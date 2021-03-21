@@ -200,7 +200,7 @@ amadeus.equivalent =
 		  amadeus.currency
 
 amadeus.taxes = amadeus.findSimilar().filter((key) => key.name !== '')
-// console.log(amadeus)
+console.log(amadeus)
 
 const output = document.querySelector('#output-info')
 // output.value =

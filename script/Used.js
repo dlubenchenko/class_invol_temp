@@ -5,4 +5,4 @@ used.usedTaxes = used.usedTx()
 used.usedTaxes = used.findSimilar()
 used.totalUsedTax = used.sumTax()
 
-// console.log(used)
+console.log(used)
